@@ -5,17 +5,23 @@ $(document).ready(function(){
   var Dealer = new Player('Dealer');
   var Player1 = new Player('Player1');
 
+// When you click the start button
   $('#start').click(function() {
+    // New deck is instantiated
     var newDeck = new Deck();
+    // Deck is shuffled
     newDeck.shuffle();
-    Dealer.hand.push(newDeck.deal());
-    Dealer.hand.push(newDeck.deal());
-    Player1.hand.push(newDeck.deal());
-    Player1.hand.push(newDeck.deal());
+    newDeck.shuffle();
+    newDeck.shuffle();
+    // Dealera nd player each receive 2 cards
+    Dealer.hand.push(newDeck.deal(), newDeck.deal());
+    Player1.hand.push(newDeck.deal(), newDeck.deal());
+    // Initial check for win or loss
     var dealer = Dealer.winLoss();
     console.log(dealer);
     var player = Player1.winLoss();
     console.log(player);
+    
     if (!player){
       $('#player').append('<h1> YOU LOSE :( </h1>');
     }
@@ -34,6 +40,7 @@ $(document).ready(function(){
     $('#dealer').append('<img src="./images/b1fv.png" alt="img" id="back">');
   });
 
+// When you click the hit button
   $('#hit').click(function() {
     var card = newDeck.deal();
     $('#player').append('<img src="./images/' + card.name() + '.png" alt="img">');
@@ -48,6 +55,7 @@ $(document).ready(function(){
     }
   });
 
+// When you click the stay button
   $('#stay').click(function() {
     while (Dealer.sum < 18){
       var card = newDeck.deal();
@@ -76,16 +84,18 @@ $(document).ready(function(){
 
 });
 
+// Function to creat a card
 function Card(suit, value){
   this.suit = suit;
   this.value = value;
-
+// The name needs to match the naming conventions of the card images "s" = Spades, "h" = Hearts, "c" = Clubs, "d" = Diamonds
   this.name = function(){
     var suits = ['s', 'h', 'c', 'd'];
     return suits[this.suit] + this.value;
   };
 };
 
+// Function to create a new deck
 function Deck() {
   this.newDeck = function(){
     cards = [];
@@ -114,7 +124,7 @@ function Deck() {
     return cards.pop();
   };
 }
-
+// Function to create a player (the dealer is also a player)
 function Player(name){
   this.name = name;
   this.hand = [];
